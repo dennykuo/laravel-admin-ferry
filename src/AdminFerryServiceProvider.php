@@ -14,7 +14,12 @@ class AdminFerryServiceProvider extends ServiceProvider
 {
     use PackageSetting;
 
-    public function boot()
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot(): void
     {
         // If run in console
         if ($this->app->runningInConsole()) {
@@ -27,22 +32,22 @@ class AdminFerryServiceProvider extends ServiceProvider
         // Add view components namespace
         Blade::componentNamespace(__NAMESPACE__.'\\View\\Components', self::$viewNamespace);
 
-        // 擴展 Collection
-        Collection::macro('recursive', function () {
-            return $this->map(function ($value) {
-                if (is_array($value) || is_object($value)) {
-                    return collect($value)->recursive();
-                }
-
-                return $value;
-            });
-        });
+        // 擴展 Collection - 添加 recursive 方法
+        $this->registerCollectionMacros();
 
         // 檢查套件的 mix-manifest.json 是否存在，不存在則 publish
-        $this->checkMixManifestFile();
+        // 只在開發環境或第一次安裝時檢查，避免每次請求都執行
+        if ($this->app->environment('local') || config('app.debug')) {
+            $this->checkMixManifestFile();
+        }
     }
 
-    public function register()
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register(): void
     {
         $this->mergeConfigFrom(__DIR__.'/config/admin-ferry.php', static::$publishConfigName);
 
@@ -55,18 +60,12 @@ class AdminFerryServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function bootForConsole()
+    protected function bootForConsole(): void
     {
         // Artisan commands
         $this->commands([
             Commands\AssetsPublishCommand::class,
         ]);
-
-        // Publish assets
-        // 需要改成另外的資料夾位置，為使用者自己修改的資源了
-        // $this->publishes([
-        //     __DIR__.'/../assets' => public_path(static::$publishAssetsPath),
-        // ], 'laravel-admin-ferry:assets');
 
         // Publish configs
         $output = config_path(static::$publishConfigName . '.php');
@@ -75,16 +74,54 @@ class AdminFerryServiceProvider extends ServiceProvider
         ], 'laravel-admin-ferry:config');
     }
 
-    protected function checkMixManifestFile()
+    /**
+     * 註冊 Collection 巨集
+     *
+     * @return void
+     */
+    protected function registerCollectionMacros(): void
     {
-        $manifestFile = public_path(admin_asset() . 'mix-manifest.json');
+        // 如果 macro 已經註冊則跳過（避免重複註冊）
+        if (Collection::hasMacro('recursive')) {
+            return;
+        }
 
-        if (! file_exists($manifestFile)) {
-            $this->commands([
-                Commands\AssetsPublishCommand::class,
+        Collection::macro('recursive', function () {
+            return $this->map(function ($value) {
+                if (is_array($value) || is_object($value)) {
+                    return collect($value)->recursive();
+                }
+
+                return $value;
+            });
+        });
+    }
+
+    /**
+     * 檢查 mix-manifest.json 是否存在，不存在則自動發布
+     *
+     * @return void
+     */
+    protected function checkMixManifestFile(): void
+    {
+        try {
+            $manifestFile = public_path(admin_asset() . 'mix-manifest.json');
+
+            if (! file_exists($manifestFile)) {
+                // 只在 console 環境下自動執行
+                if ($this->app->runningInConsole()) {
+                    $this->commands([
+                        Commands\AssetsPublishCommand::class,
+                    ]);
+
+                    Artisan::call('laravel-admin-ferry:assets-publish');
+                }
+            }
+        } catch (\Exception $e) {
+            // 靜默失敗，避免影響應用程式啟動
+            logger()->warning('Failed to check mix-manifest.json', [
+                'error' => $e->getMessage(),
             ]);
-
-            Artisan::call('laravel-admin-ferry:assets-publish');
         }
     }
 }

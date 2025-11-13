@@ -1,4 +1,46 @@
+# Dependencies
 node_modules/
+vendor/
+
+# Build outputs
+hot
+mix-manifest.json
+
+# Logs
 npm-debug.log
 yarn-error.log
-hot
+*.log
+
+# IDE and Editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Testing
+.phpunit.cache/
+.phpunit.result.cache
+coverage/
+.coverage
+*.clover
+
+# Environment
+.env
+.env.backup
+.env.production
+
+# Composer
+composer.phar
+composer.lock
+
+# NPM / Yarn
+package-lock.json
+yarn.lock
+
+# Temporary files
+*.tmp
+*.temp
+*.cache
