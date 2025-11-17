@@ -5,6 +5,7 @@ namespace Dennykuo\AdminFerry;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Collection;
 use Dennykuo\AdminFerry\Commands;
 use Dennykuo\AdminFerry\Concerns\PackageSetting;
@@ -14,7 +15,12 @@ class AdminFerryServiceProvider extends ServiceProvider
 {
     use PackageSetting;
 
-    public function boot()
+    /**
+     * Bootstrap package services
+     *
+     * @return void
+     */
+    public function boot(): void
     {
         // If run in console
         if ($this->app->runningInConsole()) {
@@ -27,22 +33,21 @@ class AdminFerryServiceProvider extends ServiceProvider
         // Add view components namespace
         Blade::componentNamespace(__NAMESPACE__.'\\View\\Components', self::$viewNamespace);
 
-        // 擴展 Collection
-        Collection::macro('recursive', function () {
-            return $this->map(function ($value) {
-                if (is_array($value) || is_object($value)) {
-                    return collect($value)->recursive();
-                }
+        // 擴展 Collection - 使用更清晰的實現
+        $this->registerCollectionMacros();
 
-                return $value;
-            });
-        });
-
-        // 檢查套件的 mix-manifest.json 是否存在，不存在則 publish
-        $this->checkMixManifestFile();
+        // 檢查套件的 mix-manifest.json 是否存在（僅在非生產環境）
+        if (!$this->app->isProduction()) {
+            $this->checkMixManifestFile();
+        }
     }
 
-    public function register()
+    /**
+     * Register package services
+     *
+     * @return void
+     */
+    public function register(): void
     {
         $this->mergeConfigFrom(__DIR__.'/config/admin-ferry.php', static::$publishConfigName);
 
@@ -55,18 +60,12 @@ class AdminFerryServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function bootForConsole()
+    protected function bootForConsole(): void
     {
         // Artisan commands
         $this->commands([
             Commands\AssetsPublishCommand::class,
         ]);
-
-        // Publish assets
-        // 需要改成另外的資料夾位置，為使用者自己修改的資源了
-        // $this->publishes([
-        //     __DIR__.'/../assets' => public_path(static::$publishAssetsPath),
-        // ], 'laravel-admin-ferry:assets');
 
         // Publish configs
         $output = config_path(static::$publishConfigName . '.php');
@@ -75,16 +74,49 @@ class AdminFerryServiceProvider extends ServiceProvider
         ], 'laravel-admin-ferry:config');
     }
 
-    protected function checkMixManifestFile()
+    /**
+     * 註冊 Collection 宏
+     *
+     * @return void
+     */
+    protected function registerCollectionMacros(): void
     {
-        $manifestFile = public_path(admin_asset() . 'mix-manifest.json');
+        // 擴展 Collection - 遞迴轉換陣列和物件為 Collection
+        Collection::macro('recursive', function () {
+            return $this->map(function ($value) {
+                if (is_array($value) || is_object($value)) {
+                    return collect($value)->recursive();
+                }
 
-        if (! file_exists($manifestFile)) {
+                return $value;
+            });
+        });
+    }
+
+    /**
+     * 檢查 mix-manifest.json 文件是否存在，使用緩存避免重複檢查
+     *
+     * @return void
+     */
+    protected function checkMixManifestFile(): void
+    {
+        $cacheKey = 'admin-ferry:manifest-checked';
+
+        // 使用緩存避免每次請求都檢查文件系統
+        $manifestExists = Cache::remember($cacheKey, 3600, function () {
+            $manifestFile = public_path(admin_asset() . 'mix-manifest.json');
+            return file_exists($manifestFile);
+        });
+
+        if (!$manifestExists) {
             $this->commands([
                 Commands\AssetsPublishCommand::class,
             ]);
 
             Artisan::call('laravel-admin-ferry:assets-publish');
+
+            // 清除緩存以便下次重新檢查
+            Cache::forget($cacheKey);
         }
     }
 }

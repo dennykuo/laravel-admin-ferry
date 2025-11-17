@@ -5,6 +5,11 @@
         "spatie/yaml-front-matter": "^2.0",
         "laravelcollective/html": "^6.2"
     },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5|^10.0",
+        "orchestra/testbench": "^7.0|^8.0",
+        "mockery/mockery": "^1.5"
+    },
     "autoload": {
         "psr-4": {
             "Dennykuo\\AdminFerry\\": "src/"
@@ -15,7 +20,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Dennykuo\\AdminFerry\\Test\\": "tests"
+            "Dennykuo\\AdminFerry\\Tests\\": "tests"
         }
     },
     "extra": {
@@ -24,5 +29,9 @@
                 "Dennykuo\\AdminFerry\\AdminFerryServiceProvider"
             ]
         }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
     }
 }

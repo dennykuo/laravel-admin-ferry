@@ -2,3 +2,22 @@ node_modules/
 npm-debug.log
 yarn-error.log
 hot
+
+# PHP dependencies
+/vendor/
+
+# Testing
+/coverage/
+.phpunit.result.cache
+
+# Environment
+.env
+.env.testing
+
+# IDE
+.DS_Store
+.idea/
+.vscode/
+
+# Logs
+*.log
