@@ -1,42 +1,109 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Dennykuo\AdminFerry;
 
-use Illuminate\Support\ServiceProvider;
+use Dennykuo\AdminFerry\Commands\AssetsPublishCommand;
+use Dennykuo\AdminFerry\Commands\MakeTemplateCommand;
+use Dennykuo\AdminFerry\Concerns\PackageSetting;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Collection;
-use Dennykuo\AdminFerry\Commands;
-use Dennykuo\AdminFerry\Concerns\PackageSetting;
-use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\ServiceProvider;
 
+/**
+ * AdminFerry 服務提供者
+ *
+ * 負責註冊套件的視圖、命令、配置和 Collection 擴展。
+ */
 class AdminFerryServiceProvider extends ServiceProvider
 {
     use PackageSetting;
 
+    /**
+     * 取得服務提供者提供的服務
+     *
+     * @return array<int, string>
+     */
     public function provides(): array
     {
         return [
-            Spatie\Html\HtmlServiceProvider::class,
+            'Spatie\Html\HtmlServiceProvider',
         ];
     }
 
-    public function boot()
+    /**
+     * 啟動套件服務
+     *
+     * @return void
+     */
+    public function boot(): void
     {
-        // If run in console
+        // 如果在命令列環境中運行
         if ($this->app->runningInConsole()) {
             $this->bootForConsole();
         }
 
-        // Load views with new namespace
-        $this->loadViewsFrom(__DIR__.'/../resources/views', self::$viewNamespace);
+        // 載入視圖並設定命名空間
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', self::$viewNamespace);
 
-        // Add view components namespace
-        Blade::componentNamespace(__NAMESPACE__.'\\View\\Components', self::$viewNamespace);
+        // 註冊 Blade 組件命名空間
+        Blade::componentNamespace(__NAMESPACE__ . '\\View\\Components', self::$viewNamespace);
 
-        // 擴展 Collection
-        Collection::macro('recursive', function () {
-            return $this->map(function ($value) {
+        // 擴展 Collection 支援遞迴轉換
+        $this->registerCollectionMacros();
+
+        // 檢查套件的 manifest.json 是否存在
+        $this->ensureManifestFileExists();
+    }
+
+    /**
+     * 註冊套件服務
+     *
+     * @return void
+     */
+    public function register(): void
+    {
+        // 合併配置檔案
+        $this->mergeConfigFrom(__DIR__ . '/config/admin-ferry.php', static::$publishConfigName);
+
+        // 設定 assets 發布路徑配置
+        Config::set(static::$publishConfigName . '.assets-path', static::$publishAssetsPath);
+    }
+
+    /**
+     * 命令列環境啟動設定
+     *
+     * @return void
+     */
+    protected function bootForConsole(): void
+    {
+        // 註冊 Artisan 命令
+        $this->commands([
+            AssetsPublishCommand::class,
+            MakeTemplateCommand::class,
+        ]);
+
+        // 發布配置檔案
+        $this->publishes([
+            __DIR__ . '/config/admin-ferry.php' => config_path(static::$publishConfigName . '.php'),
+        ], 'laravel-admin-ferry-config');
+    }
+
+    /**
+     * 註冊 Collection 巨集方法
+     *
+     * @return void
+     */
+    protected function registerCollectionMacros(): void
+    {
+        // 擴展 Collection 支援遞迴轉換陣列和物件
+        Collection::macro('recursive', function (): Collection {
+            /** @var Collection $this */
+            return $this->map(function (mixed $value): mixed {
                 if (is_array($value) || is_object($value)) {
                     return collect($value)->recursive();
                 }
@@ -44,52 +111,20 @@ class AdminFerryServiceProvider extends ServiceProvider
                 return $value;
             });
         });
-
-        // 檢查套件的 mix-manifest.json 是否存在，不存在則 publish
-        $this->checkMixManifestFile();
-    }
-
-    public function register()
-    {
-        $this->mergeConfigFrom(__DIR__.'/config/admin-ferry.php', static::$publishConfigName);
-
-        // Set assets publish config
-        Config::set(static::$publishConfigName . '.assets-path', static::$publishAssetsPath);
     }
 
     /**
-     * Console booting.
+     * 檢查並確保 manifest.json 檔案存在
      *
      * @return void
      */
-    protected function bootForConsole()
-    {
-        // Artisan commands
-        $this->commands([
-            Commands\AssetsPublishCommand::class,
-            Commands\MakeTemplateCommand::class,
-        ]);
-
-        // Publish assets
-        // 需要改成另外的資料夾位置，為使用者自己修改的資源了
-        // $this->publishes([
-        //     __DIR__.'/../assets' => public_path(static::$publishAssetsPath),
-        // ], 'laravel-admin-ferry:assets');
-
-        // Publish configs
-        $output = config_path(static::$publishConfigName . '.php');
-        $this->publishes([
-            __DIR__.'/config/admin-ferry.php' => $output,
-        ], 'laravel-admin-ferry-config');
-    }
-
-    protected function checkMixManifestFile()
+    protected function ensureManifestFileExists(): void
     {
         $manifestFile = public_path(admin_asset() . '/manifest.json');
 
-        if (! file_exists($manifestFile)) {
+        if (!File::exists($manifestFile)) {
             $this->commands([
-                Commands\AssetsPublishCommand::class,
+                AssetsPublishCommand::class,
             ]);
 
             Artisan::call('laravel-admin-ferry:assets-publish');
