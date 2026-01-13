@@ -1,0 +1,80 @@
+# Dependabot 自動化依賴更新配置
+# 更多資訊: https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+updates:
+  # NPM 依賴更新
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "03:00"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "npm"
+    commit-message:
+      prefix: "chore(deps)"
+    ignore:
+      # 忽略主要版本更新（需手動審查）
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      vue-ecosystem:
+        patterns:
+          - "vue*"
+          - "@vitejs/*"
+      tailwind-ecosystem:
+        patterns:
+          - "tailwindcss"
+          - "@tailwindcss/*"
+      build-tools:
+        patterns:
+          - "vite"
+          - "postcss*"
+          - "autoprefixer"
+
+  # Composer 依賴更新
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "03:00"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "composer"
+    commit-message:
+      prefix: "chore(deps)"
+    ignore:
+      # 忽略主要版本更新（需手動審查）
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      laravel-framework:
+        patterns:
+          - "laravel/*"
+          - "illuminate/*"
+      symfony-components:
+        patterns:
+          - "symfony/*"
+      testing-tools:
+        patterns:
+          - "phpunit/*"
+          - "pestphp/*"
+          - "mockery/*"
+
+  # GitHub Actions 工作流程更新
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "03:00"
+    labels:
+      - "dependencies"
+      - "github-actions"
+    commit-message:
+      prefix: "chore(ci)"
