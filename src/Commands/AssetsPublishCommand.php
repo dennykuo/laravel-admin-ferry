@@ -82,6 +82,11 @@ class AssetsPublishCommand extends Command
             return true; // Path doesn't exist yet, allow creation
         }
 
+        // Check if basePath or publicPath are valid
+        if ($basePath === false || $publicPath === false) {
+            return false;
+        }
+
         return str_starts_with($realPath, $basePath) || str_starts_with($realPath, $publicPath);
     }
 }

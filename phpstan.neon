@@ -7,5 +7,8 @@ parameters:
         - src
     excludePaths:
         - src/config
-    checkMissingIterableValueType: false
-    checkGenericClassInNonGenericObjectType: false
+
+    # 忽略特定錯誤類型
+    ignoreErrors:
+        # 忽略缺少的泛型類型
+        - identifier: missingType.generics

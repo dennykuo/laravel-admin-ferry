@@ -5,6 +5,8 @@
          colors="true"
          failOnRisky="true"
          failOnWarning="true"
+         beStrictAboutOutputDuringTests="true"
+         executionOrder="random"
          cacheDirectory=".phpunit.cache">
     <testsuites>
         <testsuite name="Unit Tests">
@@ -20,10 +22,15 @@
         </include>
         <exclude>
             <directory>src/config</directory>
+            <directory>src/View/Components</directory>
+            <file>src/helpers.php</file>
         </exclude>
     </source>
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="APP_KEY" value="base64:test1234567890123456789012345678"/>
+        <env name="CACHE_DRIVER" value="array"/>
+        <env name="SESSION_DRIVER" value="array"/>
+        <env name="QUEUE_CONNECTION" value="sync"/>
     </php>
 </phpunit>
