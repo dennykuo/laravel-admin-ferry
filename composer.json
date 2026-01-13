@@ -2,9 +2,18 @@
     "name": "dennykuo/laravel-admin-ferry",
     "description": "後台",
     "type": "library",
+    "license": "MIT",
     "require": {
+        "php": "^8.1",
+        "illuminate/support": "^10.0|^11.0",
         "spatie/yaml-front-matter": "^2.0",
         "spatie/laravel-html": "^3.2"
+    },
+    "require-dev": {
+        "pestphp/pest": "^2.34",
+        "pestphp/pest-plugin-laravel": "^2.3",
+        "orchestra/testbench": "^8.0|^9.0",
+        "phpstan/phpstan": "^1.10"
     },
     "autoload": {
         "psr-4": {
@@ -16,7 +25,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Dennykuo\\AdminFerry\\Test\\": "tests"
+            "Dennykuo\\AdminFerry\\Tests\\": "tests/"
         }
     },
     "extra": {
@@ -27,11 +36,22 @@
         }
     },
     "scripts": {
+        "test": "pest",
+        "test:coverage": "pest --coverage",
+        "analyse": "phpstan analyse",
         "post-update-cmd": [
             "php artisan laravel-admin-ferry:assets-publish"
         ],
         "post-install-cmd": [
             "php artisan laravel-admin-ferry:assets-publish"
         ]
-    }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
