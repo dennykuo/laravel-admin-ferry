@@ -4,8 +4,9 @@
     .ferry-breadcrumb-item {
         @apply flex items-center;
 
-        &, a {
-            @apply leading-none lg:text-lg !important;
+        &,
+        a {
+            @apply !leading-none lg:!text-lg;
         }
 
         & {
@@ -17,25 +18,29 @@
         }
     }
 
-    .ferry-breadcrumb-item + .ferry-breadcrumb-item {
+    .ferry-breadcrumb-item+.ferry-breadcrumb-item {
         @apply pl-3;
     }
-    .ferry-breadcrumb-item + .ferry-breadcrumb-item::before {
+
+    .ferry-breadcrumb-item+.ferry-breadcrumb-item::before {
         @apply inline-block pr-3 text-indigo-300;
         content: '/';
     }
 
     &.ferry-breadcrumb-sm {
         .ferry-breadcrumb-item {
-            &, a {
-                @apply text-xs lg:text-sm !important;
+
+            &,
+            a {
+                @apply !text-xs lg:!text-sm;
             }
         }
 
-        .ferry-breadcrumb-item + .ferry-breadcrumb-item {
+        .ferry-breadcrumb-item+.ferry-breadcrumb-item {
             @apply pl-1.5 md:pl-2.5;
         }
-        .ferry-breadcrumb-item + .ferry-breadcrumb-item::before {
+
+        .ferry-breadcrumb-item+.ferry-breadcrumb-item::before {
             @apply pr-1.5 md:pr-2.5;
         }
     }

@@ -4,14 +4,30 @@
     }
 
     .ferry-section {
-        @apply w-full p-4 pb-16 lg:p-6 lg:border border-gray-200/70 bg-white shadow-sm mx-auto space-y-default;
+        @apply w-full p-4 pb-16 lg:p-6 lg:border border-gray-200/70 bg-white shadow-sm mx-auto space-y-3;
 
-        &.ferry-section-form { @apply pb-0; }
+        &.ferry-section-form {
+            @apply pb-0;
+        }
 
-        &.ferry-section-full { @apply w-full; }
-        &.ferry-section-sm   { @apply w-full md:w-6/7 lg:w-4/5 lg:max-w-2xl; }
-        &.ferry-section-md   { @apply w-full md:w-7/8 lg:w-6/7 lg:max-w-3xl; }
-        &.ferry-section-lg   { @apply w-full md:w-9/10 lg:w-8/9 lg:max-w-5xl; }
-        &.ferry-section-xl   { @apply w-full md:w-11/12 lg:w-10/12 lg:max-w-7xl; }
+        &.ferry-section-full {
+            @apply w-full;
+        }
+
+        &.ferry-section-sm {
+            @apply w-full md:w-6/7 lg:w-4/5 lg:max-w-2xl;
+        }
+
+        &.ferry-section-md {
+            @apply w-full md:w-7/8 lg:w-6/7 lg:max-w-3xl;
+        }
+
+        &.ferry-section-lg {
+            @apply w-full md:w-9/10 lg:w-8/9 lg:max-w-5xl;
+        }
+
+        &.ferry-section-xl {
+            @apply w-full md:w-11/12 lg:w-10/12 lg:max-w-7xl;
+        }
     }
 }

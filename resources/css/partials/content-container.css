@@ -10,7 +10,7 @@
     }
 
     #ferry-content-container {
-        @apply space-y-4 lg:space-y-default;
+        @apply space-y-4 lg:space-y-3;
 
         .ferry-content-title-set {
             @apply w-max flex items-center !mb-6;

@@ -3,6 +3,10 @@
 //
 import './vendor.js';
 
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import 'noty/lib/noty.css';
+import 'noty/lib/themes/relax.css';
+
 //
 // Import common JS
 //

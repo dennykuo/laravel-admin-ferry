@@ -2,7 +2,7 @@
 .ferry-gotop {
     @apply fixed bottom-5 right-5 md:bottom-7 md:right-7 z-15 inline-flex items-center justify-center rounded-full;
     @apply w-8 h-8 md:w-9 md:h-9;
-    @apply border border-gray-300/60 bg-white bg-opacity-90;
+    @apply border border-gray-300/60 bg-white/90;
     @apply text-gray-400 shadow-md text-center text-base md:text-lg leading-none transition-all duration-500;
     @apply hover:bg-indigo-500 hover:text-white hover:border-transparent;
 }
@@ -20,12 +20,12 @@
         @apply flex space-x-1.5;
 
         .form-input {
-            @extend %form-input-style;
+            @extend .form-input-style-placeholder;
             @apply pl-[2.5rem];
         }
 
         button {
-            @extend %btn;
+            @extend .btn;
             @apply flex-none;
         }
     }

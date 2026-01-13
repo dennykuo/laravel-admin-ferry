@@ -1,14 +1,47 @@
+# 技術棧 Stack
+
+## Frontend
+- **Build Tool**: Vite v6
+- **Framework**: Vue 3 (v3.5+)
+- **CSS Framework**: Tailwind CSS v4.0
+    - Plugins: Forms, Typography
+    - Includes auto-prefixing (autoprefixer removed)
+- **CSS Processor**: PostCSS v8.4
+    - Features: Nesting, Import, Extend Rule
+- **Icons**:
+    - FontAwesome v6
+    - CSS.gg v2
+- **Interactivity & Utilities**:
+    - HTMX v2
+    - jQuery v3.7
+    - VanillaJS Datepicker v1.3
+    - Noty v3.2 (Notifications)
+
+## Backend (PHP/Laravel)
+- **PHP Version**: 8.0 - 8.3
+- **Laravel Support**: 8.x, 9.x, 10.x, 11.x
+- **Core Packages**:
+    - `spatie/yaml-front-matter`: For parsing YAML configuration in views.
+    - `spatie/laravel-html`: For form generation and HTML helpers.
+- **Testing & Analysis**:
+    - Pest / PHPUnit
+    - PHPStan
+    - Orchestra Testbench
+
 # TODO
 
-宿主無法使用未使用的 tailwind class 樣式，解決方式：宿主使用 cdn，但此套件的 tailwind class 必須加上前綴
-文字編輯器
-publish 範本
+- 宿主無法使用未在專案中使用到的 tailwind class 樣式，解決方式：宿主使用 cdn，但此套件的 tailwind class 必須加上前綴
+- 富文本編輯器
+- publish 範本
 
 # Branchs
 
 master: 原本的 Laravel Vite 及 eva-icons，將來都會棄用，因有部分專案使用了，將來改 v1 時再替換為主分支，目前先不動
 develop: 暫為 V0 時的主分支
-vite: 原 Laravel Vite 改為原生 Vite，讓宿主程式可以自由選擇使用 Vite 或 Laravel Vite
+
+use-laravel-html: 將 laravel 中改用 laravel-html 套件，為目前最主要版本
+
+new: ai 優化過的版本，延伸自 use-laravel-html
 
 # 開發備註
 
