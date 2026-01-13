@@ -1,0 +1,27 @@
+@layer base {
+    /* Vue.js or Alpine.js */
+    [v-cloak], [x-cloak] {
+        display: none;
+    }
+
+    html {
+        min-height: 100vh;
+    }
+
+    html, body {
+        @extend %global-font;
+        @apply flex flex-col h-screen;
+        @apply bg-gray-100/40 text-gray-600;
+
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+    }
+
+    *:focus {
+        outline: 0 !important;
+        box-shadow: none !important;
+    }
+
+    button, input, optgroup, select, textarea {
+        line-height: 1em;
+    }
+}

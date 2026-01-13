@@ -1,0 +1,54 @@
+.ferry-header {
+    @apply flex items-center justify-between w-full h-[var(--header-height)] fixed top-0 left-0 z-19 lg:z-25 px-4 lg:px-5;
+    @apply bg-white border-b border-b-gray-200 lg:border-b-gray-100/50 shadow;
+    /* @apply lg:border-t-2 border-t-blue-500; */
+
+    .ferry-nav-toggler {
+        @apply lg:hidden flex items-center text-gray-500 text-2xl;
+    }
+
+    .ferry-header-brand {
+        @apply absolute lg:static flex items-center left-1/2 z-5 transform -translate-x-1/2 lg:translate-x-0 min-w-max;
+        @apply text-base lg:text-xl tracking-wider text-center lg:text-left;
+
+        .ferry-header-brand-name {
+            @apply inline-block;
+        }
+
+        .ferry-for-test {
+            @apply text-sm bg-red-400 text-white ml-2.5 px-2 py-1 rounded-full leading-none;
+        }
+    }
+}
+
+.ferry-header-toolbar {
+    @apply flex flex-wrap items-center text-gray-700 space-x-5 align-middle;
+
+    .toolbar-dropdown-toggler { @apply hidden; }
+
+    .toolbar-dropdown-toggler:checked + .ferry-toolbar-dropdown {
+        & > .ferry-toolbar-dropdown-close-trigger,
+        & > .ferry-toolbar-dropdown-submenu {
+            display: block;
+        }
+    }
+
+    .ferry-toolbar-dropdown {
+        @apply relative;
+
+        .ferry-toolbar-dropdown-name {
+            @apply cursor-pointer flex items-center;
+        }
+
+        .ferry-toolbar-dropdown-close-trigger {
+            @apply hidden fixed inset-0 h-full w-full z-10;
+        }
+
+        .ferry-toolbar-dropdown-submenu {
+            @apply hidden absolute z-20 top-[36px] right-0 w-48 bg-white border border-gray-100/90 shadow;
+        }
+        .ferry-toolbar-dropdown-submenu-item {
+            @apply block px-5 py-3 text-sm text-gray-600 hover:bg-blue-500/80 hover:text-white
+        }
+    }
+}

@@ -1,0 +1,12 @@
+/* fontawasome @因需要一起引入字型檔，在母程式的路徑不同，也可改用 link 方式引入，目前則是用 vite assetsInline 方式解決路徑問題 */
+@import "../../node_modules/@fortawesome/fontawesome-free/css/all.min.css";
+
+/* css.gg */
+/*@import "../../node_modules/css.gg/icons/all.css";*/
+
+/* noty */
+@import "../../node_modules/noty/lib/noty.css";
+@import "../../node_modules/noty/lib/themes/relax.css";
+
+/* vanillajs-datepicker */
+@import "../../node_modules/vanillajs-datepicker/dist/css/datepicker.min.css";

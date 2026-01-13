@@ -1,0 +1,78 @@
+.ferry-nav-mask {
+    @apply absolute h-screen w-screen bg-gray-700 bg-opacity-5 z-19;
+    @apply transition duration-500;
+
+    backdrop-filter: blur(2px);
+}
+
+.ferry-nav {
+    @apply flex flex-col fixed top-0 lg:top-16 bottom-0 left-0 z-20 lg:z-18 overflow-x-hidden overflow-y-auto;
+    @apply w-9/12 lg:w-[var(--nav-lg-width)] px-3 pt-2.5 pb-8 space-y-[3px];
+    @apply transition-all origin-left transform;
+    @apply -translate-x-full lg:translate-x-0; /* 手機上展開與否所用 */
+    @apply bg-white text-gray-700;
+    @apply border-r border-gray-200/70 lg:border-gray-100 shadow-sm lg:shadow-none;
+    @apply text-[14.8px] !leading-[1.07rem];
+
+    .ferry-nav-item {
+        @apply flex items-center justify-between w-full;
+        @apply cursor-pointer rounded;
+        @apply px-4 py-3 lg:py-2;
+        @apply hover:bg-blue-500 hover:text-white;
+        @apply transition duration-300;
+
+        &.is-active {
+            /*@apply bg-gradient-to-r from-blue-300/40 to-blue-300/50;*/
+            @apply bg-blue-300/30;
+            @apply text-blue-700;
+            /*@apply hover:bg-transparent;*/
+        }
+    }
+
+    &.is-open {
+        @apply translate-x-0;
+    }
+
+    .ferry-nav-close {
+        @apply lg:hidden text-gray-600 text-3xl text-left p-2.5 -ml-2;
+    }
+
+    .ferry-nav-label {
+        @apply px-0.5 pt-2 pb-1.5;
+        /* @apply bg-amber-100; */
+        /* @apply border-t border-gray-100; */
+        @apply text-[13.5px] text-indigo-700/70 font-normal;
+    }
+
+    .ferry-nav-dropdown {
+        .ferry-nav-item-append-icon {
+            @apply w-4 h-4 ml-2 transition-transform duration-200;
+        }
+
+        .ferry-nav-submenu {
+            @apply h-0 overflow-hidden; /* 展開效果會因下一個選單項目而有不連續感，先取消 */
+            @apply space-y-1 my-0;
+
+            .ferry-nav-item {
+                @apply ml-3;
+            }
+        }
+
+        &.is-open {
+            /* @apply bg-gray-100/80;
+
+            > .ferry-nav-item {
+                @apply bg-blue-500/80 text-white;
+            } */
+
+            .ferry-nav-item-append-icon {
+                @apply rotate-90;
+            }
+
+            .ferry-nav-submenu {
+                @apply h-full my-1;
+            }
+        }
+    }
+
+}

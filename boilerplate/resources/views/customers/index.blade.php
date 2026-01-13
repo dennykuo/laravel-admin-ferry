@@ -11,11 +11,11 @@ breadcrumb: null
   @endif
 
   @if ($errors->any())
-    <x-admin::alert.error-obvious :errors="$errors" />
+    <x-admin::alert.error :errors="$errors" />
   @endif
 
   <div class="flex justify-end">
-    <a href="{{ route('customers.create') }}" class="btn btn-light-primary py-3"><i class="eva eva-plus-outline mr-1"></i>新增客戶</a>
+    <a href="{{ route('customers.create') }}" class="btn btn-light-primary py-3"><i class="fa-thin fa-plus"></i>新增客戶</a>
   </div>
 
   @if ($customers->count())

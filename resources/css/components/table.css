@@ -1,0 +1,68 @@
+@layer components {
+    .data-table {
+        /* td 自動寬度 */
+        /* @apply table-auto; */
+        /* td 固定寬度 */
+        @apply table-fixed;
+        @apply w-full border-collapse border border-gray-200;
+
+        th {
+            @apply lg:min-w-[6rem] px-2 py-2 lg:px-4 lg:py-3 border-b border-gray-200 text-sm font-normal text-left text-gray-600 bg-gray-50;
+        }
+
+        &.text-cneter th {
+            @apply text-center;
+        }
+
+        td {
+            @apply px-2 py-2 lg:px-4 lg:py-4 lg:border-b border-gray-200 text-sm;
+        }
+
+        th[data-tool], td[data-tool] {
+            @apply lg:min-w-[140px] lg:max-w-[200px];
+        }
+
+        &.vertical-align-top td {
+            vertical-align: top;
+        }
+
+        @media (max-width: 1022px) {
+            &.is-responsive {
+                @apply border-0;
+
+                tr:first-of-type {
+                    @apply hidden;
+                }
+
+                tr:not(:first-of-type) {
+                    @apply flex flex-col mb-8 bg-gray-100/60 p-1.5 border border-gray-300/70;
+                }
+
+                td {
+                    @apply border-0 text-left py-2;
+                }
+
+                td[data-label] {
+                    @apply flex flex-col;
+                }
+
+                td[data-label]::before {
+                    @apply text-cyan-700 min-w-max mr-6 mb-0.5;
+                    content: attr(data-label);
+                }
+
+                td[data-tool] {
+                    @apply mt-3;
+                }
+            }
+        }
+    } /* /.data-table */
+
+    .table-no-data {
+        @apply pt-8 pb-24 text-center;
+
+        .table-no-data-text {
+            @apply text-4xl font-light text-gray-400;
+        }
+    }
+}

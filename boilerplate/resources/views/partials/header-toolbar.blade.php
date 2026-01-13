@@ -1,9 +1,9 @@
-{{-- <a href="javascript:void(0)" class="text-2xl"><i class="eva eva-email-outline"></i></a> --}}
+{{-- <a href="javascript:void(0)" class="text-xl"><i class="fa-solid fa-envelope"></i></a> --}}
 
-<x-admin::header.dropdown icon-class="text-2xl" :items="
+<x-admin::header.dropdown icon-class="text-xl" :items="
   [
     ['name' => '登出', 'link' => route('auth.logout')],
   ]
 ">
-  <i class="eva eva-person-outline"></i>
+  <i class="fa-solid fa-user"></i>
 </x-admin::header.dropdown>

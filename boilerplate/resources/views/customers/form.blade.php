@@ -8,7 +8,7 @@ breadcrumb:
 <x-admin::section size="md" is-form="true">
 
   @if ($errors->any())
-    <x-admin::alert.error-obvious :errors="$errors" />
+    <x-admin::alert.error :errors="$errors" />
   @endif
 
   @if ( ! empty($customer))
