@@ -1,0 +1,27 @@
+# EditorConfig 是一個幫助開發者在不同編輯器和 IDE 之間保持一致編碼風格的配置文件
+# 訪問 https://editorconfig.org 了解更多資訊
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.{yml,yaml}]
+indent_size = 2
+
+[*.{js,json,vue}]
+indent_size = 2
+
+[*.blade.php]
+indent_size = 4
+
+[{package.json,composer.json}]
+indent_size = 2

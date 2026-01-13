@@ -1,11 +1,28 @@
 {
     "name": "dennykuo/laravel-admin-ferry",
-    "description": "後台",
+    "description": "一個現代化的 Laravel 後台管理系統套件，整合 Tailwind CSS、Vue.js 和 HTMX",
+    "keywords": [
+        "laravel",
+        "admin",
+        "backend",
+        "tailwind",
+        "vue",
+        "htmx",
+        "admin-panel",
+        "ferry"
+    ],
     "type": "library",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Denny Kuo",
+            "email": "dennykuo@example.com"
+        }
+    ],
     "require": {
-        "php": "^8.1",
-        "illuminate/support": "^10.0|^11.0",
+        "php": "^8.0|^8.1|^8.2|^8.3",
+        "illuminate/support": "^8.0|^9.0|^10.0|^11.0",
+        "illuminate/view": "^8.0|^9.0|^10.0|^11.0",
         "spatie/yaml-front-matter": "^2.0",
         "spatie/laravel-html": "^3.2"
     },
@@ -13,9 +30,9 @@
         "pestphp/pest": "^2.34",
         "pestphp/pest-plugin-laravel": "^2.3",
         "phpunit/phpunit": "^9.5|^10.0",
-        "orchestra/testbench": "^8.0|^9.0",
+        "orchestra/testbench": "^6.0|^7.0|^8.0|^9.0",
         "phpstan/phpstan": "^1.10",
-        "mockery/mockery": "^1.5"
+        "mockery/mockery": "^1.4|^1.5"
     },
     "autoload": {
         "psr-4": {
@@ -51,6 +68,7 @@
     },
     "config": {
         "sort-packages": true,
+        "optimize-autoloader": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true
         }
