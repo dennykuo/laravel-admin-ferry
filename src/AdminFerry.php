@@ -33,6 +33,7 @@ class AdminFerry
             $viewParsed = self::parseView($viewHTML);
 
             /** @var Collection $viewParams */
+            // @phpstan-ignore-next-line - recursive() is a macro registered in ServiceProvider
             $viewParams = collect($viewParsed->params)->recursive();
             $viewContent = $viewParsed->content;
 

@@ -58,7 +58,7 @@ class AdminFerryServiceProvider extends ServiceProvider
         $this->registerCollectionMacros();
 
         // 檢查套件的 manifest.json 是否存在（僅在非生產環境）
-        if (!$this->app->isProduction()) {
+        if (!$this->app->environment('production')) {
             $this->ensureManifestFileExists();
         }
     }
@@ -108,6 +108,7 @@ class AdminFerryServiceProvider extends ServiceProvider
             /** @var Collection $this */
             return $this->map(function (mixed $value): mixed {
                 if (is_array($value) || is_object($value)) {
+                    // @phpstan-ignore-next-line - recursive call within macro definition
                     return collect($value)->recursive();
                 }
 

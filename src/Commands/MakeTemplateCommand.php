@@ -60,7 +60,14 @@ class MakeTemplateCommand extends Command
                 $templateOutputPath .= '/' . $outputDir;
             }
 
-            $templateSourceFile = "{$templateSourcePath}/{$view}.blade.php";
+            // Ensure $view is a string (choice() can return array in some cases)
+            $viewName = is_array($view) ? reset($view) : $view;
+            if (!is_string($viewName)) {
+                $this->error('無效的模板選擇。');
+                return Command::FAILURE;
+            }
+
+            $templateSourceFile = "{$templateSourcePath}/{$viewName}.blade.php";
             $templateOutputFile = "{$templateOutputPath}/{$outputViewName}.blade.php";
 
             // Validate paths to prevent directory traversal
@@ -150,6 +157,10 @@ class MakeTemplateCommand extends Command
         if ($realPath === false) {
             // Directory doesn't exist yet, check parent
             return $this->isValidPath(dirname($path));
+        }
+
+        if ($basePath === false) {
+            return false;
         }
 
         return str_starts_with($realPath, $basePath);

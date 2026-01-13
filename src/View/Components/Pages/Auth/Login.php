@@ -20,7 +20,7 @@ class Login extends Component
      *
      * @param string $submitUrl 登入表單提交的 URL
      * @param string|null $passwordResetUrl 忘記密碼頁面的 URL
-     * @param string|null $heading 頁面標題
+     * @param string $heading 頁面標題
      */
     public function __construct(
         public readonly string $submitUrl,
