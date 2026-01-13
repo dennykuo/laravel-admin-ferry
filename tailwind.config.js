@@ -1,4 +1,7 @@
-module.exports = {
+import forms from '@tailwindcss/forms';
+import typography from '@tailwindcss/typography';
+
+export default {
     // prefix: '$-',
     content: [
         './resources/js/**/*.{vue,js,ts}',
@@ -122,7 +125,7 @@ module.exports = {
         },
     },
     plugins: [
-        require("@tailwindcss/forms"),
-        require("@tailwindcss/typography")
+        forms,
+        typography
     ],
 }
