@@ -12,8 +12,10 @@
     "require-dev": {
         "pestphp/pest": "^2.34",
         "pestphp/pest-plugin-laravel": "^2.3",
+        "phpunit/phpunit": "^9.5|^10.0",
         "orchestra/testbench": "^8.0|^9.0",
-        "phpstan/phpstan": "^1.10"
+        "phpstan/phpstan": "^1.10",
+        "mockery/mockery": "^1.5"
     },
     "autoload": {
         "psr-4": {
@@ -38,6 +40,7 @@
     "scripts": {
         "test": "pest",
         "test:coverage": "pest --coverage",
+        "test:phpunit": "vendor/bin/phpunit",
         "analyse": "phpstan analyse",
         "post-update-cmd": [
             "php artisan laravel-admin-ferry:assets-publish"

@@ -10,6 +10,7 @@ use Dennykuo\AdminFerry\Concerns\PackageSetting;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
@@ -56,8 +57,10 @@ class AdminFerryServiceProvider extends ServiceProvider
         // 擴展 Collection 支援遞迴轉換
         $this->registerCollectionMacros();
 
-        // 檢查套件的 manifest.json 是否存在
-        $this->ensureManifestFileExists();
+        // 檢查套件的 manifest.json 是否存在（僅在非生產環境）
+        if (!$this->app->isProduction()) {
+            $this->ensureManifestFileExists();
+        }
     }
 
     /**
@@ -120,14 +123,23 @@ class AdminFerryServiceProvider extends ServiceProvider
      */
     protected function ensureManifestFileExists(): void
     {
-        $manifestFile = public_path(admin_asset() . '/manifest.json');
+        $cacheKey = 'admin-ferry:manifest-checked';
 
-        if (!File::exists($manifestFile)) {
+        // 使用緩存避免每次請求都檢查文件系統
+        $manifestExists = Cache::remember($cacheKey, 3600, function () {
+            $manifestFile = public_path(admin_asset() . '/manifest.json');
+            return File::exists($manifestFile);
+        });
+
+        if (!$manifestExists) {
             $this->commands([
                 AssetsPublishCommand::class,
             ]);
 
             Artisan::call('laravel-admin-ferry:assets-publish');
+
+            // 清除緩存以便下次重新檢查
+            Cache::forget($cacheKey);
         }
     }
 }

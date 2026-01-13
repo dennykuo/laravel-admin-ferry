@@ -3,8 +3,21 @@ node_modules/
 npm-debug.log
 yarn-error.log
 hot
+
+# Testing
 .phpunit.cache/
 .pest/
+/coverage/
+.phpunit.result.cache
+
+# Environment
+.env
+.env.testing
+
+# IDE
 .DS_Store
 .idea/
 .vscode/
+
+# Logs
+*.log
