@@ -47,7 +47,7 @@ breadcrumb:
       </tr>
     </x-admin-ferry::tables.data-table>
   {{-- @else --}}
-    <x-admin-ferry:x-admin-ferry::tables.no-data />
+    <x-admin-ferry::tables.no-data />
   {{-- @endif --}}
 
 </x-admin-ferry::section>
